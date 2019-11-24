@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>recruiter home</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">HireMe</a>
+    </div>
+    
+  </div>
+</nav>
+
+<header style="margin-top:60px;">
+	<div class="container-fluid" style="text-align:center;">
+    <h1 id="user"></h1>
+
+	</div>
+
+
+</header>
+<section>
+
+<div class="container-fluid">
+<div class="row" style="font-size: 40px;">
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="margin-top:30px; text-align:center;">
+  <p>List of all jobs posted by you</p>
+  </div>
+
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="margin-top:30px;">
+    <p style="float:right;font-size:20px;"><a href="file:///C:/Users/HP/Desktop/learn%20API/post-job.html">Post a new job</a></p>
+  </div>
+</div>
+
+<div class="row" style="font-size: 25px; margin-top:40px;">
+<ul id="jobs-list" style="padding-left:30px;"></ul>
+</div>
+
+</section>
+<script> 
+
+function printUser() {
+
+document.getElementById("user").innerHTML = "Welcome "+ localStorage.getItem("loggedUser");
+
+}
+printUser();
+
+function getJobs() {
+  const url = "http://localhost:5000/jobs/" + localStorage.getItem("loggedUser");
+  fetch(url).then(function (response) {
+  // The API call was successful!
+  if (response.ok) {
+
+        return response.json();
+  } else {
+    
+    return response.text();
+
+  }
+}).then(function (data) {
+  // This is the JSON from our response
+//  const check = "Validation failed for classes [com.prashant.jobsite.model.UserAccount] during persist time for groups [javax.validation.groups.Default, ]"+
+// "List of constraint violations:["+
+//   "ConstraintViolationImpl{interpolatedMessage='Username should be a valid email', propertyPath=email, rootBeanClass=class"+ "com.prashant.jobsite.model.UserAccount, messageTemplate='Username should be a valid email'}"+
+// "]";
+
+        data.forEach(renderObject);  
+
+
+
+}).catch(function (err) {
+  // There was an error
+  console.warn('Something went wrong', err);
+});
+}
+
+function renderObject(item) {
+
+
+  const jobsContainer = document.getElementById("jobs-list");
+  const indJob = document.createElement('li'); 
+  
+
+  const title = document.createElement('p');
+  const company = document.createElement('p');
+  const desc = document.createElement('p');
+  const  experience = document.createElement('p');
+  const location = document.createElement('p');
+  const breakLine = document.createElement('hr');
+  
+  title.innerHTML = item.title;
+  company.innerHTML = item.company;
+  desc.innerHTML = "JD: "  + item.description;
+  experience.innerHTML = "Experience: "+ item.yearsOfExperience+ "+ years";
+  location.innerHTML = "Location: "+ item.location;
+
+indJob.appendChild(title);
+indJob.appendChild(company);
+indJob.appendChild(desc);
+indJob.appendChild(experience);
+indJob.appendChild(location);
+
+jobsContainer.appendChild(indJob);
+jobsContainer.appendChild(breakLine);
+}
+
+
+
+getJobs();
+</script>
+</body>
+</html>

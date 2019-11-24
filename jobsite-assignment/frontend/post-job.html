@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>recruiter home</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">HireMe</a>
+    </div>
+    
+  </div>
+</nav>
+
+<div class="container" style="text-align:center;width:50%;">
+    <p style="font-size:30px;margin-top:60px;"><b>Post job</b></p>
+    <p id="msg" style="font-size:15px; color:red;margin-top:20px;"></p>
+    <form id="jobdata" style="margin-top:5px;font-size: 20px;">
+   <div class="form-group">
+      <label for="name">Title*:</label>
+      <input type="text" class="form-control" placeholder="Enter full title" name="name" required>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Description*:</label>
+      <input type="email" class="form-control" placeholder="Role description" name="email" required>
+    </div> 
+
+    <div class="form-group">
+      <label for="pwd">Experience:</label>
+      <input type="number" class="form-control" placeholder="Experience in years" name="pwd" required>
+    </div>
+
+    <div class="form-group">
+      <label for="company">Company*:</label>
+      <input type="text" class="form-control" placeholder="Company name" name="company" required>
+    </div>
+    <div class="form-group">
+      <label for="desig">Location*</label>
+      <input type="text" class="form-control" placeholder="Enter job location" name="desig" required>
+    </div>
+    
+    </form>
+    <button type="submit" class="btn btn-default" onclick="callAPI()">Submit</button>
+  
+</div>
+
+<script> 
+
+function callAPI() {
+  const form = document.getElementById("jobdata");
+  const job = {};
+  job.title = form.elements[0].value;
+  job.description = form.elements[1].value;
+  job.company = form.elements[3].value;
+  job.yearsOfExperience = form.elements[2].value;
+  job.location = form.elements[4].value;
+
+const url = "http://localhost:5000/jobs/job/" + localStorage.getItem("loggedUser");
+  fetch(url, {
+  method: 'POST',
+  body: JSON.stringify(job),
+  headers: {
+    'Content-Type': 'application/json'
+  },
+}).then(function (response) {
+  // The API call was successful!
+  if (response.ok) {
+
+        return response.json();
+  } else {
+    
+    return response.text();
+
+  }
+}).then(function (data) {
+  // This is the JSON from our response
+//  const check = "Validation failed for classes [com.prashant.jobsite.model.UserAccount] during persist time for groups [javax.validation.groups.Default, ]"+
+// "List of constraint violations:["+
+//   "ConstraintViolationImpl{interpolatedMessage='Username should be a valid email', propertyPath=email, rootBeanClass=class"+ "com.prashant.jobsite.model.UserAccount, messageTemplate='Username should be a valid email'}"+
+// "]";
+
+     if(typeof(data) === "string")
+     document.getElementById("msg").innerHTML = data;
+else {
+          
+          window.location.href="file:///C:/Users/HP/Desktop/learn%20API/recruiter-home.html";
+
+}
+
+
+
+}).catch(function (err) {
+  // There was an error
+  console.warn('Something went wrong', err);
+});
+
+
+
+}
+
+</script>
+</body>
+</html>

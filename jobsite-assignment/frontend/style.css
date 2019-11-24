@@ -1,0 +1,16 @@
+html {
+overflow-x:hidden;
+}
+
+body
+{
+overflow-x:hidden;
+font-size:100%;
+}
+
+.navbar
+{
+margin-bottom:0;
+border-radius:0;
+background:#f2f2f2;
+}
